@@ -1,18 +1,24 @@
-local teleportToggle = false
+-- Script para ativar/desativar teletransporte e executar a funcionalidade
+local teleportEnabled = false
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
+local teleportDestination = Vector3.new(0, 50, 0) -- Coordenadas do destino do teletransporte
 
+-- Alterna o estado do teletransporte
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
     if gameProcessed then return end
 
     if input.KeyCode == Enum.KeyCode.O then
-        teleportToggle = not teleportToggle
-        print("Teleporte " .. (teleportToggle and "Ativado" or "Desativado"))
-    elseif input.KeyCode == Enum.KeyCode.T and teleportToggle then
+        teleportEnabled = not teleportEnabled
+        print("Teleporte " .. (teleportEnabled and "Ativado" or "Desativado"))
+    elseif input.KeyCode == Enum.KeyCode.T and teleportEnabled then
         local character = player.Character
         if character and character:FindFirstChild("HumanoidRootPart") then
-            character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(0, 50, 0)) -- Posição de destino
+            character.HumanoidRootPart.CFrame = CFrame.new(teleportDestination)
+            print("Teletransportado para:", teleportDestination)
+        else
+            warn("Personagem não disponível.")
         end
     end
 end)
