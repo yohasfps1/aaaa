@@ -1,41 +1,18 @@
-# Compiled Lua sources
-luac.out
+local teleportToggle = false
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
 
-# luarocks build files
-*.src.rock
-*.zip
-*.tar.gz
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
 
-# Object files
-*.o
-*.os
-*.ko
-*.obj
-*.elf
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-*.def
-*.exp
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
+    if input.KeyCode == Enum.KeyCode.O then
+        teleportToggle = not teleportToggle
+        print("Teleporte " .. (teleportToggle and "Ativado" or "Desativado"))
+    elseif input.KeyCode == Enum.KeyCode.T and teleportToggle then
+        local character = player.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(0, 50, 0)) -- Posição de destino
+        end
+    end
+end)
